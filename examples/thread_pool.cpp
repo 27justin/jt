@@ -43,6 +43,8 @@ main() {
     for (size_t i = 0; i < WORKERS; ++i) {
         std::thread worker = std::thread([&]() -> void {
             std::function<void()> dispatch;
+            // `wait`ing on the consumer with multiple threads steals
+            // the newest entry for all other workers.
             while ((dispatch = lock.wait())) {
                 dispatch();
             }
@@ -51,8 +53,9 @@ main() {
     }
 
     for (size_t i = 0; i < 128; ++i) {
-        // Dispatch some functions
         auto dispatch = thread_pool.tx();
+        // Dispatch a simple function that prints something to the
+        // console and then blocks the worker thread for some amount of time.
         dispatch([=]() {
             std::cout << std::format("This is thread #{}, it: {}\n", std::hash<std::thread::id>{}(std::this_thread::get_id()), i);
             std::this_thread::sleep_for(std::chrono::milliseconds(i));
