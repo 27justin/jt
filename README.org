@@ -1,0 +1,45 @@
+#+DESCRIPTION: Concurrent data structures for C++
+#+AUTHOR: Justin Andreas Lacoste
+*jt* is a lightweight, single-header library that provides convenient concurrent data structures designed for efficient multi-threaded programming.
+
+*Note*: This library requires at least C++20.
+
+* Features
+
+** Multi-Producer / Single-Consumer (MPSC)
+
+The MPSC (Multi-Producer, Single-Consumer) implementation allows
+multiple threads to safely enqueue data while others wait for it.
+
+Unlike the name, this library allows for multiple threads to safely
+~wait~ on the consumer. Effectively transforming the queue into a
+work-stealing queue.
+
+- *Example*: Check out the [[examples/thread_pool.cpp][thread pool example]] to see how to utilize
+  the MPSC queue.
+
+** Single-Producer / Multi-Consumer (SPMC)
+
+The SPMC (Single-Producer, Multi-Consumer) implementation employs a
+publish-subscribe pattern, enabling a single producer to distribute
+data to multiple consumers. This is particularly useful for scenarios
+where you want to broadcast messages or events to several listeners.
+
+* Getting Started
+
+To use *jt*, simply include the header file ~jt.hpp~ in your source code.
+
+* Documentation
+
+There currently are is no documentation, refer to either the
+source-code in ~jt.hpp~, or look at the ~examples/~.
+
+* Usage
+
+Refer to the examples provided in the ~examples~ directory for
+practical usage patterns.
+
+* License
+
+This project is licensed under the MIT License. See the [[LICENSE][LICENSE]] file
+for details.
