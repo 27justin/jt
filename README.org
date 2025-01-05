@@ -26,13 +26,23 @@ data to multiple consumers. This is particularly useful for scenarios
 where you want to broadcast messages or events to several listeners.
 
 * Getting Started
+** Manually
+Simply copy the ~jt.hpp~ header and include it in your source code.
 
-To use *jt*, simply include the header file ~jt.hpp~ in your source code.
+** CMake
+To get started using ~jt~ with CMake, add the repository somewhere
+into your project, i.e. ~third_party/jt~ and then use:
+
+#+BEGIN_SRC cmake
+  set(JT_BUILD_EXAMPLES OFF)
+  add_subdirectory(third_party/jt)
+  target_link_libraries(<your-executable> PRIVATE jt)
+#+END_SRC
 
 * Documentation
 
-There currently are is no documentation, refer to either the
-source-code in ~jt.hpp~, or look at the ~examples/~.
+There currently is no documentation, refer to either the source-code
+in ~jt.hpp~, or look at the ~examples/~.
 
 * Usage
 
