@@ -31,7 +31,7 @@
 namespace jt {
 
 template<typename T>
-using fifo = std::front_insert_iterator<T>;
+using fifo = std::back_insert_iterator<T>;
 
 template<typename T>
 using lifo = std::front_insert_iterator<T>;
@@ -51,13 +51,13 @@ struct mpsc {
     struct consumer {
         private:
         queue<value>            queue_;
-        std::atomic<bool>       locked_;
         mutable std::mutex      queue_lock_;
         std::condition_variable cv_;
 
         public:
-        consumer()
-          : locked_(false) {}
+        consumer() {}
+        consumer(const consumer &) = delete;
+        consumer(const consumer &&) = delete;
 
         value wait() {
             std::unique_lock<std::mutex> lock(queue_lock_);
@@ -92,7 +92,7 @@ struct mpsc {
     public:
     consumer &rx() { return consumer_; }
 
-    producer tx() const { return producer{ .channel_ = const_cast<mpsc<value>::consumer *>(&consumer_) }; }
+    producer tx() const { return producer{ .channel_ = const_cast<consumer *>(&consumer_) }; }
 };
 
 // A simple implementation of a single-producer/multi-consumer
