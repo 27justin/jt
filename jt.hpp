@@ -77,7 +77,7 @@ struct mpsc {
             cv_.notify_one();
         }
         friend class producer;
-        friend class mpsc;
+        friend struct mpsc;
     };
 
     struct producer {
@@ -118,7 +118,7 @@ struct spmc {
           : producer_(producer) {
             producer_->adopt(*this);
         }
-        friend class spmc;
+        friend struct spmc;
 
         public:
         ~consumer() { producer_->remove(this); }
@@ -154,7 +154,7 @@ struct spmc {
         private:
         std::list<consumer *> consumers_;
         mutable std::mutex    lock_;
-        friend class spmc;
+        friend struct spmc;
 
         public:
         producer() {}
